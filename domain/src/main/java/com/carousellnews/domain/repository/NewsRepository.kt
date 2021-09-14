@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface NewsRepository {
 
-    suspend fun getNews(): Flow<News>
+    suspend fun getNews(): Flow<List<News>>
 }
