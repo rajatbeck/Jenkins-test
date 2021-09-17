@@ -2,9 +2,12 @@ package com.carousellnews.data.mapper
 
 import com.carousellnews.data.models.NewsEntity
 import com.carousellnews.domain.models.News
+import com.carousellnews.domain.utils.DateUtils
 import javax.inject.Inject
 
-class NewsMapper @Inject constructor(): Mapper<NewsEntity, News> {
+class NewsMapper @Inject constructor(
+    private val dateUtils: DateUtils
+): Mapper<NewsEntity, News> {
 
     override fun mapFromEntity(type: NewsEntity): News {
         return News(
@@ -12,7 +15,7 @@ class NewsMapper @Inject constructor(): Mapper<NewsEntity, News> {
             type.title,
             type.description,
             type.bannerUrl,
-            type.timeStamp,
+            dateUtils.convertToReadableFormat(type.timeStamp),
             type.rank
         )
     }
@@ -24,7 +27,7 @@ class NewsMapper @Inject constructor(): Mapper<NewsEntity, News> {
             type.title,
             type.description,
             type.bannerUrl,
-            type.timeStamp,
+            dateUtils.convertTimeDurationToTimestamp(type.timeDuration),
             type.rank
         )
     }
