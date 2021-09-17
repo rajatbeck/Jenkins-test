@@ -2,7 +2,7 @@ package com.carousellnews.data.mapper
 
 import com.carousellnews.data.fakes.FakeNews
 import com.carousellnews.data.utils.BaseTest
-import com.carousellnews.domain.models.TimeDuration
+import com.carousellnews.domain.models.RelativeTime
 import com.carousellnews.domain.models.enums.Duration
 import com.carousellnews.domain.utils.DateUtils
 import com.nhaarman.mockitokotlin2.any
@@ -39,7 +39,7 @@ class NewsMapperTest : BaseTest() {
         dispatcher.runBlockingTest {
             //Given
             val newsFake = FakeNews.getNews().get(0)
-            whenever(dateUtils.convertToReadableFormat(any())) doReturn TimeDuration(
+            whenever(dateUtils.convertToReadableFormat(any())) doReturn RelativeTime(
                 Duration.SECONDS,
                 0
             )

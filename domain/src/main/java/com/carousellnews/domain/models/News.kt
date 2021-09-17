@@ -5,6 +5,6 @@ data class News(
     val title: String,
     val description: String,
     val bannerUrl: String,
-    val timeDuration: TimeDuration,
+    val relativeTime: RelativeTime,
     val rank: Int
 )

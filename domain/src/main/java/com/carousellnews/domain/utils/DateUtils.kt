@@ -1,61 +1,70 @@
 package com.carousellnews.domain.utils
 
-import com.carousellnews.domain.models.TimeDuration
+import com.carousellnews.domain.models.RelativeTime
 import com.carousellnews.domain.models.enums.Duration
-import java.sql.Time
-import java.sql.Timestamp
-import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class DateUtils @Inject constructor() {
 
-    fun convertToReadableFormat(timestamp: Long): TimeDuration {
-        val calendar = Calendar.getInstance()
-        val currentTimestamp = calendar.timeInMillis
-        val diff = currentTimestamp - timestamp
-        val seconds = diff / 1000
-        val minutes = seconds / 60
-        val hours = minutes / 60
-        val days = hours / 24
-        val weeks = days / 7
-        val months = weeks / 4
-        val year = months / 12
-        var timeDuration = TimeDuration(Duration.SECONDS, 0)
-        if (seconds > 0) {
-            timeDuration = TimeDuration(Duration.SECONDS, seconds.toInt())
+    fun convertToReadableFormat(_timestamp: Long): RelativeTime {
+        val currentTime = Calendar.getInstance().timeInMillis
+        var timestamp = _timestamp
+        if (_timestamp < 1000000000000L) {
+            timestamp *= 1000
         }
-        if (minutes > 0) {
-            timeDuration = TimeDuration(Duration.MINUTES, minutes.toInt())
-        }
-        if (hours > 0) {
-            timeDuration = TimeDuration(Duration.HOURS, hours.toInt())
-        }
-        if (days > 0) {
-            timeDuration = TimeDuration(Duration.DAYS, days.toInt())
-        }
-        if (weeks > 0) {
-            timeDuration = TimeDuration(Duration.WEEK, weeks.toInt())
-        }
-        if (months > 0) {
-            timeDuration = TimeDuration(Duration.MONTHS, months.toInt())
-        }
-        if (year > 0) {
-            timeDuration = TimeDuration(Duration.YEAR, year.toInt())
+        val earlierTime = Calendar.getInstance()
+        earlierTime.timeInMillis = timestamp
+        val diff = currentTime - earlierTime.timeInMillis
+        val seconds = TimeUnit.MILLISECONDS.toSeconds(diff)
+        val minutes = TimeUnit.MILLISECONDS.toMinutes(diff)
+        val hours = TimeUnit.MILLISECONDS.toHours(diff)
+        val days = TimeUnit.MILLISECONDS.toDays(diff)
+        val timeDuration: RelativeTime
+        when {
+            seconds < 60 -> {
+                timeDuration = RelativeTime(Duration.SECONDS, seconds.toInt())
+            }
+            minutes < 60 -> {
+                timeDuration = RelativeTime(Duration.MINUTES, minutes.toInt())
+            }
+            hours < 24 -> {
+                timeDuration = RelativeTime(Duration.HOURS, hours.toInt())
+            }
+            days >= 7 -> {
+                timeDuration = when {
+                    days >= 365 -> {
+                        val year = days / 365
+                        RelativeTime(Duration.YEAR, year.toInt())
+                    }
+                    days >= 30 -> {
+                        val month = days / 30
+                        RelativeTime(Duration.MONTHS, month.toInt())
+                    }
+                    else -> {
+                        val week = days / 7
+                        RelativeTime(Duration.WEEK, week.toInt())
+                    }
+                }
+            }
+            else -> {
+                timeDuration = RelativeTime(Duration.DAYS, days.toInt())
+            }
         }
         return timeDuration
     }
 
-    fun convertTimeDurationToTimestamp(timeDuration: TimeDuration): Long {
+    fun convertTimeDurationToTimestamp(relativeTime: RelativeTime): Long {
         val calendar = Calendar.getInstance()
-        when (timeDuration.duration) {
-            Duration.SECONDS -> calendar.set(Calendar.SECOND, -timeDuration.value)
-            Duration.MINUTES -> calendar.set(Calendar.MINUTE, -timeDuration.value)
-            Duration.HOURS -> calendar.set(Calendar.HOUR, -timeDuration.value)
-            Duration.DAYS -> calendar.set(Calendar.DATE, -timeDuration.value)
-            Duration.WEEK -> calendar.set(Calendar.DATE, -timeDuration.value * 4)
-            Duration.MONTHS -> calendar.set(Calendar.MONTH, -timeDuration.value)
-            Duration.YEAR -> calendar.set(Calendar.YEAR, -timeDuration.value)
+        when (relativeTime.duration) {
+            Duration.SECONDS -> calendar.set(Calendar.SECOND, -relativeTime.value)
+            Duration.MINUTES -> calendar.set(Calendar.MINUTE, -relativeTime.value)
+            Duration.HOURS -> calendar.set(Calendar.HOUR, -relativeTime.value)
+            Duration.DAYS -> calendar.set(Calendar.DATE, -relativeTime.value)
+            Duration.WEEK -> calendar.set(Calendar.DATE, -relativeTime.value * 4)
+            Duration.MONTHS -> calendar.set(Calendar.MONTH, -relativeTime.value)
+            Duration.YEAR -> calendar.set(Calendar.YEAR, -relativeTime.value)
         }
         return calendar.timeInMillis
     }
