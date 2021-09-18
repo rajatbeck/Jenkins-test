@@ -8,7 +8,9 @@ import javax.inject.Inject
 
 class DateUtils @Inject constructor() {
 
-    fun convertToReadableFormat(_timestamp: Long): RelativeTime {
+    fun convertToReadableFormat(_timestamp: Long?): RelativeTime? {
+        if (_timestamp == null)
+            return null
         val currentTime = Calendar.getInstance().timeInMillis
         var timestamp = _timestamp
         if (_timestamp < 1000000000000L) {
@@ -55,7 +57,10 @@ class DateUtils @Inject constructor() {
         return timeDuration
     }
 
-    fun convertTimeDurationToTimestamp(relativeTime: RelativeTime): Long {
+    fun convertTimeDurationToTimestamp(relativeTime: RelativeTime?): Long? {
+        if(relativeTime == null){
+            return null
+        }
         val calendar = Calendar.getInstance()
         when (relativeTime.duration) {
             Duration.SECONDS -> calendar.set(Calendar.SECOND, -relativeTime.value)
