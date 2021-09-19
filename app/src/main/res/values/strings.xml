@@ -1,3 +1,33 @@
 <resources>
-    <string name="app_name">CarousellNews</string>
+    <string name="app_name">Carousell News</string>
+    <plurals name="secondCount">
+        <item quantity="one" formatted="true">%d second ago</item>
+        <item quantity="other" formatted="true">%d seconds ago</item>
+    </plurals>
+    <plurals name="minuteCount">
+        <item quantity="one" formatted="true">%d month ago</item>
+        <item quantity="other" formatted="true">%d months ago</item>
+    </plurals>
+    <plurals name="hourCount">
+        <item quantity="one" formatted="true">%d hour ago</item>
+        <item quantity="other" formatted="true">%d hours ago</item>
+    </plurals>
+    <plurals name="dayCount">
+        <item quantity="one" formatted="true">%d day ago</item>
+        <item quantity="other" formatted="true">%d days ago</item>
+    </plurals>
+
+    <plurals name="weekCount">
+        <item quantity="one" formatted="true">%d week ago</item>
+        <item quantity="other" formatted="true">%d weeks ago</item>
+    </plurals>
+    <plurals name="monthCount">
+        <item quantity="one" formatted="true">%d month ago</item>
+        <item quantity="other" formatted="true">%d months ago</item>
+    </plurals>
+   <plurals name="yearCount">
+        <item quantity="one" formatted="true">%s year ago</item>
+        <item quantity="other" formatted="true">%s years ago</item>
+    </plurals>
+
 </resources>
