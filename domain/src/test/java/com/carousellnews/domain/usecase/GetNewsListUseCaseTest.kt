@@ -1,6 +1,7 @@
 package com.carousellnews.domain.usecase
 
 import com.carousellnews.domain.fakes.FakeData
+import com.carousellnews.domain.models.enums.Sort
 import com.carousellnews.domain.repository.NewsRepository
 import com.carousellnews.domain.utils.DomainBaseTest
 import com.nhaarman.mockitokotlin2.*
@@ -10,6 +11,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runBlockingTest
+import net.bytebuddy.TypeCache
 import org.hamcrest.CoreMatchers.instanceOf
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
@@ -38,10 +40,11 @@ class GetNewsListUseCaseTest : DomainBaseTest(){
     fun `get News should return success result with news list`(){
       dispatcher.runBlockingTest {
           //Given
+          val sort:Sort = Sort.DATE
           whenever(newsRepository.getNews()) doReturn FakeData.getNews()
 
           //When
-          val newsList = underTest.invoke(Unit).single()
+          val newsList = underTest.invoke(sort).single()
 
           //Then
           assertEquals(newsList.size,3)
@@ -51,14 +54,76 @@ class GetNewsListUseCaseTest : DomainBaseTest(){
     }
 
     @Test
+    fun `get News should return success with date sort first`(){
+        dispatcher.runBlockingTest {
+            //Given
+            val sort:Sort = Sort.DATE
+            whenever(newsRepository.getNews()) doReturn FakeData.getNews()
+
+            //When
+            val newsList = underTest.invoke(sort).single()
+
+            //Then
+            assertEquals(newsList.size,3)
+            verify(newsRepository, times(1)).getNews()
+            assertEquals(newsList[0].id,"121")
+            assertEquals(newsList[1].id,"123")
+            assertEquals(newsList[2].id,"122")
+
+        }
+    }
+
+
+    @Test
+    fun `get News should return success with rank sort first`(){
+        dispatcher.runBlockingTest {
+            //Given
+            val sort:Sort = Sort.RANK
+            whenever(newsRepository.getNews()) doReturn FakeData.getNews()
+
+            //When
+            val newsList = underTest.invoke(sort).single()
+
+            //Then
+            assertEquals(newsList.size,3)
+            verify(newsRepository, times(1)).getNews()
+            assertEquals(newsList[0].id,"121")
+            assertEquals(newsList[1].id,"122")
+            assertEquals(newsList[2].id,"123")
+
+        }
+    }
+
+
+    @Test
+    fun `get News should return success with sort by date if sort is NULL`(){
+        dispatcher.runBlockingTest {
+            //Given
+            val sort:Sort? = null
+            whenever(newsRepository.getNews()) doReturn FakeData.getNews()
+
+            //When
+            val newsList = underTest.invoke(sort).single()
+
+            //Then
+            assertEquals(newsList.size,3)
+            verify(newsRepository, times(1)).getNews()
+            assertEquals(newsList[0].id,"121")
+            assertEquals(newsList[1].id,"123")
+            assertEquals(newsList[2].id,"122")
+        }
+    }
+
+    @Test
     fun `get News should return error result with exception`(){
         dispatcher.runBlockingTest {
             //Given
+            val sort = Sort.RANK
             whenever(newsRepository.getNews()) doAnswer { throw IOException() }
 
             //When
             launch(exceptionHandler){
-                underTest(Unit).single()
+                underTest(sort).single()
             }
 
             //then

@@ -25,10 +25,10 @@ class DateUtilsTest : DomainBaseTest() {
     fun `get relative time data when timestamp entered`(){
 
         //When
-        val relativeDuration = underTest.convertToReadableFormat(1527672941)
+        val relativeDuration = underTest.convertToReadableFormat(1629484518)
 
         //Then
-        assertEquals(Duration.YEAR.name,relativeDuration.duration.name)
-        assertEquals( 3,relativeDuration.value)
+        assertEquals(Duration.MONTHS.name, relativeDuration?.duration?.name)
+        assertEquals(1, relativeDuration?.value)
     }
 }

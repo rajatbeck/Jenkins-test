@@ -14,11 +14,11 @@ class GetNewsListUseCase
     :BaseUseCase<Sort?, Flow<List<News>>> {
 
     override suspend fun invoke(params: Sort?): Flow<List<News>> {
-        return newsRepository.getNews(params)
+        return newsRepository.getNews()
             .map {
                 it.sortedWith(
                     when (params) {
-                        Sort.RANK -> compareByDescending { it.rank }
+                        Sort.RANK -> compareByDescending<News> { it.rank }.thenByDescending { it.timestamp }
                         else -> compareByDescending { it.timestamp }
                     }
                 )
