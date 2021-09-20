@@ -1,6 +1,6 @@
 package com.carousellnews.domain.models.enums
 
-enum class Filter {
+enum class Sort {
     DATE,
     RANK
 }

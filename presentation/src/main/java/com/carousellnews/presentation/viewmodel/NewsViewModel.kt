@@ -2,6 +2,7 @@ package com.carousellnews.presentation.viewmodel
 
 import androidx.lifecycle.LiveData
 import com.carousellnews.domain.models.News
+import com.carousellnews.domain.models.enums.Sort
 import com.carousellnews.domain.usecase.GetNewsListUseCase
 import com.carousellnews.presentation.utils.CoroutineContextProvider
 import com.carousellnews.presentation.utils.ExceptionHandler
@@ -41,7 +42,7 @@ class NewsViewModel @Inject constructor(
     }
 
     private suspend fun getNewsList(){
-        newsListUseCase(Unit).collect {
+        newsListUseCase(Sort.DATE).collect {
             _newsList.postValue(NewsUIModel.Success(it))
         }
     }

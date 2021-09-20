@@ -2,8 +2,9 @@ package com.carousellnews.cache.mappers
 
 import com.carousellnews.cache.models.NewsCacheEntity
 import com.carousellnews.data.models.NewsEntity
+import javax.inject.Inject
 
-class NewsCacheMappers : CacheMapper<NewsCacheEntity, NewsEntity> {
+class NewsCacheMappers @Inject constructor(): CacheMapper<NewsCacheEntity, NewsEntity> {
     override fun mapFromCached(type: NewsCacheEntity): NewsEntity {
         return NewsEntity(
             type.id,
