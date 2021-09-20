@@ -10,30 +10,34 @@ abstract class BaseAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
 
     var list: List<T>
         get() = differ.currentList
-        set(value) = differ.submitList(value)
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        getViewHolder(parent, viewType)
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (position in list.indices) {
-            (holder as Binder<T>).bind(list[position])
+        set(value) {
+            differ.submitList(null)
+            differ.submitList(value)
         }
-    }
 
-    abstract fun getViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder
+            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+                getViewHolder(parent, viewType)
 
-    override fun getItemCount(): Int {
-        return list.size
-    }
+            override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+                if (position in list.indices) {
+                    (holder as Binder<T>).bind(list[position])
+                }
+            }
 
-    protected var onItemClickListener: ((T) -> Unit)? = null
+            abstract fun getViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder
 
-    fun setItemClickListener(listener: (T) -> Unit) {
-        onItemClickListener = listener
-    }
+            override fun getItemCount(): Int {
+                return list.size
+            }
 
-    interface Binder<in T> {
-        fun bind(item: T)
-    }
+            protected var onItemClickListener: ((T) -> Unit)? = null
+
+            fun setItemClickListener(listener: (T) -> Unit) {
+                onItemClickListener = listener
+            }
+
+            interface Binder<in T> {
+                fun bind(item: T)
+            }
+
 }

@@ -18,12 +18,6 @@ class NewsRepositoryImpl
     override suspend fun getNews(sort: Sort?): Flow<List<News>> = flow {
         val isCached = newsDataSourceFactory.getCacheDataSource().getCached()
         val newsList = newsDataSourceFactory.getDataStore(isCached).getNews()
-            .sortedWith(
-                when (sort) {
-                    Sort.RANK -> compareByDescending { it.rank }
-                    else -> compareByDescending { it.timeStamp }
-                }
-            )
             .map { newsEntity ->
                 newsMapper.mapFromEntity(newsEntity)
             }

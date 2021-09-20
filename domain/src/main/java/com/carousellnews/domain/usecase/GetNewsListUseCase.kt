@@ -4,6 +4,7 @@ import com.carousellnews.domain.models.News
 import com.carousellnews.domain.models.enums.Sort
 import com.carousellnews.domain.repository.NewsRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class GetNewsListUseCase
@@ -14,6 +15,14 @@ class GetNewsListUseCase
 
     override suspend fun invoke(params: Sort?): Flow<List<News>> {
         return newsRepository.getNews(params)
+            .map {
+                it.sortedWith(
+                    when (params) {
+                        Sort.RANK -> compareByDescending { it.rank }
+                        else -> compareByDescending { it.timestamp }
+                    }
+                )
+            }
     }
 
 }

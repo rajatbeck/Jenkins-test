@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Carousell News</string>
+    <string name="recent">Recent</string>
+    <string name="popular">Popular</string>
     <plurals name="secondCount">
         <item quantity="one" formatted="true">%d second ago</item>
         <item quantity="other" formatted="true">%d seconds ago</item>

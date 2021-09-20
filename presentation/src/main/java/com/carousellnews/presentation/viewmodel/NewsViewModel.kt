@@ -1,6 +1,8 @@
 package com.carousellnews.presentation.viewmodel
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.carousellnews.domain.models.News
 import com.carousellnews.domain.models.enums.Sort
 import com.carousellnews.domain.usecase.GetNewsListUseCase
@@ -17,6 +19,7 @@ sealed class NewsUIModel : UiAwareModel() {
     object Loading : NewsUIModel()
     data class Error(var error: String = "") : NewsUIModel()
     data class Success(val list: List<News>) : NewsUIModel()
+    object Empty : NewsUIModel()
 }
 
 @HiltViewModel
@@ -29,20 +32,25 @@ class NewsViewModel @Inject constructor(
     val newsList: LiveData<NewsUIModel>
         get() = _newsList
 
+    var sortType: Sort? = null
+
     override val coroutineExceptionHandler = CoroutineExceptionHandler { _, exception ->
         val message = ExceptionHandler.parse(exception)
         _newsList.postValue(NewsUIModel.Error(exception.message ?: "error"))
     }
 
-    fun fetchData(){
+    fun fetchData(sort: Sort = Sort.DATE) {
+        if (sort == this.sortType)
+            return
+        this.sortType = sort
         _newsList.postValue(NewsUIModel.Loading)
         launchCoroutineIO {
-            getNewsList()
+            getNewsList(sort)
         }
     }
 
-    private suspend fun getNewsList(){
-        newsListUseCase(Sort.RANK).collect {
+    private suspend fun getNewsList(sort: Sort) {
+        newsListUseCase(sort).collect {
             _newsList.postValue(NewsUIModel.Success(it))
         }
     }
