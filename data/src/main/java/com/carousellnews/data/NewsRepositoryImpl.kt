@@ -15,11 +15,21 @@ class NewsRepositoryImpl
 ) : NewsRepository {
 
     override suspend fun getNews(): Flow<List<News>> = flow {
-        val newsList = newsDataSourceFactory.getRemoteDataSource()
-            .getNews()
+        val isCached = newsDataSourceFactory.getCacheDataSource().getCached()
+        val newsList = newsDataSourceFactory.getDataStore(isCached).getNews()
             .map { newsEntity ->
                 newsMapper.mapFromEntity(newsEntity)
             }
+
         emit(newsList)
     }
+
+    override suspend fun saveNews(list: List<News>) {
+        val newsEntities = list.map {news->
+            newsMapper.mapToEntity(news)
+        }
+        newsDataSourceFactory.getCacheDataSource().saveNews(newsEntities)
+    }
+
+
 }
