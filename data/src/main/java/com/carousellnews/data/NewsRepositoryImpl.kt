@@ -15,7 +15,7 @@ class NewsRepositoryImpl
     private val newsMapper: NewsMapper
 ) : NewsRepository {
 
-    override suspend fun getNews(sort: Sort?): Flow<List<News>> = flow {
+    override suspend fun getNews(): Flow<List<News>> = flow {
         val isCached = newsDataSourceFactory.getCacheDataSource().getCached()
         val newsList = newsDataSourceFactory.getDataStore(isCached).getNews()
             .map { newsEntity ->
