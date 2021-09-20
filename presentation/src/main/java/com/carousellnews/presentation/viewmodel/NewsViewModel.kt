@@ -42,7 +42,7 @@ class NewsViewModel @Inject constructor(
     }
 
     private suspend fun getNewsList(){
-        newsListUseCase(Sort.DATE).collect {
+        newsListUseCase(Sort.RANK).collect {
             _newsList.postValue(NewsUIModel.Success(it))
         }
     }

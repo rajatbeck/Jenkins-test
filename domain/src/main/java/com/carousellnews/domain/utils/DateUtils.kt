@@ -57,21 +57,5 @@ class DateUtils @Inject constructor() {
         return timeDuration
     }
 
-    fun convertTimeDurationToTimestamp(relativeTime: RelativeTime?): Long? {
-        if(relativeTime == null){
-            return null
-        }
-        val calendar = Calendar.getInstance()
-        when (relativeTime.duration) {
-            Duration.SECONDS -> calendar.set(Calendar.SECOND, -relativeTime.value)
-            Duration.MINUTES -> calendar.set(Calendar.MINUTE, -relativeTime.value)
-            Duration.HOURS -> calendar.set(Calendar.HOUR, -relativeTime.value)
-            Duration.DAYS -> calendar.set(Calendar.DATE, -relativeTime.value)
-            Duration.WEEK -> calendar.set(Calendar.DATE, -relativeTime.value * 4)
-            Duration.MONTHS -> calendar.set(Calendar.MONTH, -relativeTime.value)
-            Duration.YEAR -> calendar.set(Calendar.YEAR, -relativeTime.value)
-        }
-        return calendar.timeInMillis
-    }
 
 }

@@ -15,6 +15,7 @@ class NewsMapper @Inject constructor(
             type.title,
             type.description,
             type.bannerUrl,
+            type.timeStamp,
             dateUtils.convertToReadableFormat(type.timeStamp),
             type.rank
         )
@@ -27,7 +28,7 @@ class NewsMapper @Inject constructor(
             type.title,
             type.description,
             type.bannerUrl,
-            dateUtils.convertTimeDurationToTimestamp(type.relativeTime),
+            type.timestamp,
             type.rank
         )
     }
