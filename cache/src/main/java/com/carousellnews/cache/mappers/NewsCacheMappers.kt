@@ -17,7 +17,7 @@ class NewsCacheMappers : CacheMapper<NewsCacheEntity, NewsEntity> {
 
     override fun mapToCached(type: NewsEntity): NewsCacheEntity {
         return NewsCacheEntity(
-            type.id,
+            type.id ?: "",
             type.title,
             type.description,
             type.bannerUrl,

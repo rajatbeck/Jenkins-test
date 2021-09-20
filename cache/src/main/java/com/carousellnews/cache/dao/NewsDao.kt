@@ -14,5 +14,5 @@ interface NewsDao {
     fun getNews(): List<NewsCacheEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addNews(newsCacheEntity: NewsCacheEntity)
+    fun addNews(vararg newsCacheEntity: NewsCacheEntity)
 }
