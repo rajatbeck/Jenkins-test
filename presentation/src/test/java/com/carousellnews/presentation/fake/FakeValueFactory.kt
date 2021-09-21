@@ -19,6 +19,10 @@ object FakeValueFactory {
         return Random.nextBoolean()
     }
 
+    fun randomLong(): Long {
+        return Random.nextLong()
+    }
+
     fun randomRelativePeriod(): RelativeTime {
         return when(Random.nextInt(0,7)){
            0 -> RelativeTime(Duration.SECONDS, Random.nextInt(0, 60))

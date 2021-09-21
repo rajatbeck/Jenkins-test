@@ -51,7 +51,11 @@ class NewsViewModel @Inject constructor(
 
     private suspend fun getNewsList(sort: Sort) {
         newsListUseCase(sort).collect {
-            _newsList.postValue(NewsUIModel.Success(it))
+            if(it.isEmpty()){
+                _newsList.postValue(NewsUIModel.Empty)
+            }else {
+                _newsList.postValue(NewsUIModel.Success(it))
+            }
         }
     }
 }

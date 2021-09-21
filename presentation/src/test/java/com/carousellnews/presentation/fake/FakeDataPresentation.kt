@@ -2,6 +2,7 @@ package com.carousellnews.presentation.fake
 
 import com.carousellnews.domain.models.News
 import com.carousellnews.presentation.fake.FakeValueFactory.randomInt
+import com.carousellnews.presentation.fake.FakeValueFactory.randomLong
 import com.carousellnews.presentation.fake.FakeValueFactory.randomRelativePeriod
 import com.carousellnews.presentation.fake.FakeValueFactory.randomString
 
@@ -13,9 +14,9 @@ object FakeDataPresentation {
     ): List<News> {
         val list = mutableListOf<News>()
         repeat(size) {
-            createNews(isRandomId)
+            list.add(createNews(isRandomId))
         }
-        return list;
+        return list
     }
 
     private fun createNews(isRandomId: Boolean): News {
@@ -24,6 +25,7 @@ object FakeDataPresentation {
             randomString(),
             randomString(),
             randomString(),
+            randomLong(),
             randomRelativePeriod(),
             randomInt()
         )
