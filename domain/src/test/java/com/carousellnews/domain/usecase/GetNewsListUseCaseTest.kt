@@ -87,9 +87,9 @@ class GetNewsListUseCaseTest : DomainBaseTest(){
             //Then
             assertEquals(newsList.size,3)
             verify(newsRepository, times(1)).getNews()
-            assertEquals(newsList[0].id,"121")
-            assertEquals(newsList[1].id,"122")
-            assertEquals(newsList[2].id,"123")
+            assertEquals(newsList[0].id,"123")
+            assertEquals(newsList[1].id,"121")
+            assertEquals(newsList[2].id,"122")
 
         }
     }

@@ -18,7 +18,7 @@ class GetNewsListUseCase
             .map {
                 it.sortedWith(
                     when (params) {
-                        Sort.RANK -> compareByDescending<News> { it.rank }.thenByDescending { it.timestamp }
+                        Sort.RANK -> compareBy <News> { it.rank }.thenByDescending { it.timestamp }
                         else -> compareByDescending { it.timestamp }
                     }
                 )

@@ -1,6 +1,8 @@
-package com.carousellnews.domain.utils
+package com.carousellnews.domain
 
 import com.carousellnews.domain.models.enums.Duration
+import com.carousellnews.domain.utils.DateUtils
+import com.carousellnews.domain.utils.DomainBaseTest
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
