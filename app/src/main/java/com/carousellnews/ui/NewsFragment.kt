@@ -61,7 +61,6 @@ class NewsFragment : BaseFragment<NewsFragmentBinding,NewsViewModel>() {
             }
             is NewsUIModel.Error -> {
                 binding.progressCircular.makeGone()
-                setHasOptionsMenu(false)
                 showSnackBar(binding.root, event.error)
             }
             is NewsUIModel.Success -> {

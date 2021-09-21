@@ -13,6 +13,7 @@ import com.carousellnews.presentation.utils.UiAwareModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.supervisorScope
 import javax.inject.Inject
 
 sealed class NewsUIModel : UiAwareModel() {
@@ -45,7 +46,7 @@ class NewsViewModel @Inject constructor(
         this.sortType = sort
         _newsList.postValue(NewsUIModel.Loading)
         launchCoroutineIO {
-            getNewsList(sort)
+                getNewsList(sort)
         }
     }
 
