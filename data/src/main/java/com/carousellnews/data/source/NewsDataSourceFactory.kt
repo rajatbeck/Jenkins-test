@@ -17,11 +17,11 @@ class NewsDataSourceFactory @Inject constructor(
         }
     }
 
-    fun getRemoteDataSource(): NewsRemoteDataSource {
+    fun getRemoteDataSource(): NewsDataSource {
         return remoteDataSource
     }
 
-    fun getCacheDataSource(): NewsCacheDataSource {
+    fun getCacheDataSource(): NewsDataSource {
         return cacheDataSource
     }
 }
