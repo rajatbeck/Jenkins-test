@@ -1,5 +1,6 @@
 package com.carousellnews.remote.api
 
+import com.carousellnews.remote.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -8,15 +9,15 @@ import java.util.concurrent.TimeUnit
 
 object ServiceFactory {
 
-    fun create(isDebug: Boolean, baseUrl: String): NewsService {
-        val retrofit = createRetrofit(isDebug, baseUrl)
+    fun create(baseUrl: String): NewsService {
+        val retrofit = createRetrofit(baseUrl)
         return retrofit.create(NewsService::class.java)
     }
 
-    private fun createRetrofit(isDebug: Boolean, baseUrl: String): Retrofit {
+    private fun createRetrofit(baseUrl: String): Retrofit {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
-            .client(createOkHttpClient(createLoggingInterceptor(isDebug)))
+            .client(createOkHttpClient(createLoggingInterceptor()))
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
     }
@@ -29,9 +30,9 @@ object ServiceFactory {
             .build()
     }
 
-    private fun createLoggingInterceptor(isDebug: Boolean): HttpLoggingInterceptor {
+    private fun createLoggingInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor().apply {
-            level = if (isDebug) {
+            level = if (BuildConfig.DEBUG) {
                 HttpLoggingInterceptor.Level.BODY
             } else {
                 HttpLoggingInterceptor.Level.NONE
